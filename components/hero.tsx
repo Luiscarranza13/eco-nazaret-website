@@ -13,10 +13,12 @@ function isVideoUrl(url: string) {
 }
 
 const OLD_REMOTE_HERO_VIDEO = 'coverr-working-in-the-garden'
+const HERO_MUSIC_URL = '/audio/hero-music.mp3'
 
 export function Hero() {
   const siteConfig = useProductsStore((state) => state.siteConfig)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const audioRef = useRef<HTMLAudioElement>(null)
   const [isSoundOn, setIsSoundOn] = useState(false)
   const [mediaError, setMediaError] = useState(false)
 
@@ -31,20 +33,21 @@ export function Hero() {
   useEffect(() => {
     setMediaError(false)
     if (videoRef.current) {
-      videoRef.current.volume = 0.18
+      videoRef.current.muted = true
     }
   }, [backgroundMedia])
 
   const toggleSound = async () => {
-    const video = videoRef.current
-    if (!video) return
+    const audio = audioRef.current
+    if (!audio) return
 
-    video.volume = 0.18
-    video.muted = isSoundOn
+    audio.volume = 0.18
 
     if (!isSoundOn) {
-      video.muted = false
-      await video.play().catch(() => undefined)
+      const played = await audio.play().then(() => true).catch(() => false)
+      if (!played) return
+    } else {
+      audio.pause()
     }
 
     setIsSoundOn(!isSoundOn)
@@ -78,6 +81,7 @@ export function Hero() {
         <div className="absolute inset-0 bg-linear-to-r from-black/78 via-black/38 to-black/18" />
         <div className="absolute inset-0 bg-linear-to-t from-background/90 via-transparent to-black/20" />
       </div>
+      <audio ref={audioRef} src={HERO_MUSIC_URL} loop preload="none" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <motion.div
