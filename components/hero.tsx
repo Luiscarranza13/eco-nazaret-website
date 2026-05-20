@@ -88,9 +88,9 @@ export function Hero() {
             onError={() => setMediaError(true)}
           />
         )}
-        <div className="absolute inset-0 bg-black/42" />
-        <div className="absolute inset-0 bg-linear-to-r from-black/78 via-black/38 to-black/18" />
-        <div className="absolute inset-0 bg-linear-to-t from-background/90 via-transparent to-black/20" />
+        <div className="absolute inset-0 bg-black/22" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/62 via-black/24 to-black/8" />
+        <div className="absolute inset-0 bg-linear-to-t from-background/72 via-transparent to-black/10" />
       </div>
       <audio ref={audioRef} src={HERO_MUSIC_URL} loop preload="none" />
 
