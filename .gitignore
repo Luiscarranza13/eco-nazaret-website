@@ -18,5 +18,7 @@ node_modules
 *.mov
 *.webm
 public/videos/
+!public/videos/
+!public/videos/hero-background.mp4
 tsconfig.tsbuildinfo
 .vercel

@@ -4,5 +4,7 @@ public/videos
 *.mp4
 *.mov
 *.webm
+!public/videos/
+!public/videos/hero-background.mp4
 *.log
 tsconfig.tsbuildinfo
