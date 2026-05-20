@@ -73,7 +73,7 @@ export function FeaturedProducts() {
                   alt={product.name}
                   className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 
                 <motion.button
                   initial={{ opacity: 0, y: 20 }}

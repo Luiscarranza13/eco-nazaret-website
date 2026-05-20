@@ -208,6 +208,8 @@ function ShopContent() {
               <button
                 onClick={() => setSearchQuery('')}
                 className="absolute right-3 top-1/2 -translate-y-1/2"
+                aria-label="Limpiar búsqueda"
+                title="Limpiar búsqueda"
               >
                 <X className="w-4 h-4 text-muted-foreground hover:text-foreground" />
               </button>
@@ -235,7 +237,7 @@ function ShopContent() {
 
         <div className="flex gap-8">
           {/* Desktop Sidebar */}
-          <aside className="hidden lg:block w-64 flex-shrink-0">
+          <aside className="hidden lg:block w-64 shrink-0">
             <div className="sticky top-24 bg-card rounded-xl border border-border p-6">
               <FilterContent />
             </div>
@@ -296,7 +298,7 @@ function ShopContent() {
                           alt={product.name}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute inset-0 bg-linear-to-t from-foreground/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                         {/* Quick Add Button */}
                         <motion.button

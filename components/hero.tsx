@@ -71,8 +71,8 @@ export function Hero() {
           />
         )}
         <div className="absolute inset-0 bg-black/42" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/78 via-black/38 to-black/18" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-black/20" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/78 via-black/38 to-black/18" />
+        <div className="absolute inset-0 bg-linear-to-t from-background/90 via-transparent to-black/20" />
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
@@ -92,7 +92,7 @@ export function Hero() {
             {siteConfig.heroTitleRest}
           </h1>
 
-          <div className="text-lg sm:text-xl text-white/88 mb-9 max-w-2xl leading-relaxed min-h-[4rem] drop-shadow-[0_2px_16px_rgba(0,0,0,0.55)]">
+          <div className="text-lg sm:text-xl text-white/88 mb-9 max-w-2xl leading-relaxed min-h-16 drop-shadow-[0_2px_16px_rgba(0,0,0,0.55)]">
             <TypeAnimation
               sequence={[
                 600,
