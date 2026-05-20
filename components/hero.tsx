@@ -12,19 +12,22 @@ function isVideoUrl(url: string) {
   return /\.(mp4|webm|mov)(\?.*)?$/i.test(url)
 }
 
-const localHeroVideo = '/videos/hero-background.mp4'
-const oldRemoteHeroVideo = 'coverr-working-in-the-garden'
+const OLD_REMOTE_HERO_VIDEO = 'coverr-working-in-the-garden'
 
 export function Hero() {
   const siteConfig = useProductsStore((state) => state.siteConfig)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isSoundOn, setIsSoundOn] = useState(false)
 
+  // Use heroVideoUrl only when it's a valid external URL.
+  // The local /videos file is excluded from production (Vercel 100MB limit),
+  // so we fall back to heroBackgroundImage instead of the local path.
   const backgroundMedia = useMemo(() => {
-    if (!siteConfig.heroVideoUrl || siteConfig.heroVideoUrl.includes(oldRemoteHeroVideo)) {
-      return localHeroVideo
+    const url = siteConfig.heroVideoUrl
+    if (url && !url.includes(OLD_REMOTE_HERO_VIDEO) && url.startsWith('http')) {
+      return url
     }
-    return siteConfig.heroVideoUrl || siteConfig.heroGifUrl || siteConfig.heroBackgroundImage
+    return siteConfig.heroGifUrl || siteConfig.heroBackgroundImage
   }, [siteConfig.heroBackgroundImage, siteConfig.heroGifUrl, siteConfig.heroVideoUrl])
 
   useEffect(() => {
