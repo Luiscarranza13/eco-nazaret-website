@@ -18,19 +18,18 @@ export function Hero() {
   const siteConfig = useProductsStore((state) => state.siteConfig)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isSoundOn, setIsSoundOn] = useState(false)
+  const [mediaError, setMediaError] = useState(false)
 
-  // Use heroVideoUrl only when it's a valid external URL.
-  // The local /videos file is excluded from production (Vercel 100MB limit),
-  // so we fall back to heroBackgroundImage instead of the local path.
   const backgroundMedia = useMemo(() => {
-    const url = siteConfig.heroVideoUrl
-    if (url && !url.includes(OLD_REMOTE_HERO_VIDEO) && url.startsWith('http')) {
-      return url
-    }
-    return siteConfig.heroGifUrl || siteConfig.heroBackgroundImage
+    return [siteConfig.heroVideoUrl, siteConfig.heroGifUrl, siteConfig.heroBackgroundImage].find(
+      (url) => url && !url.includes(OLD_REMOTE_HERO_VIDEO),
+    )
   }, [siteConfig.heroBackgroundImage, siteConfig.heroGifUrl, siteConfig.heroVideoUrl])
+  const fallbackMedia = siteConfig.heroGifUrl || siteConfig.heroBackgroundImage
+  const activeMedia = mediaError ? fallbackMedia : backgroundMedia
 
   useEffect(() => {
+    setMediaError(false)
     if (videoRef.current) {
       videoRef.current.volume = 0.18
     }
@@ -54,23 +53,25 @@ export function Hero() {
   return (
     <section id="inicio" className="relative min-h-screen overflow-hidden bg-black pt-28 sm:pt-32">
       <div className="absolute inset-0">
-        {backgroundMedia && isVideoUrl(backgroundMedia) ? (
+        {activeMedia && isVideoUrl(activeMedia) ? (
           <video
             ref={videoRef}
             className="absolute inset-0 h-full w-full object-cover hero-loop-media"
-            src={backgroundMedia}
-            poster={siteConfig.heroBackgroundImage}
+            src={activeMedia}
+            poster={fallbackMedia}
             autoPlay
             muted
             loop
             playsInline
             preload="metadata"
+            onError={() => setMediaError(true)}
           />
         ) : (
           <img
-            src={backgroundMedia || siteConfig.heroBackgroundImage}
+            src={activeMedia || fallbackMedia}
             alt=""
             className="absolute inset-0 h-full w-full object-cover hero-loop-media"
+            onError={() => setMediaError(true)}
           />
         )}
         <div className="absolute inset-0 bg-black/42" />
@@ -173,7 +174,7 @@ export function Hero() {
         </motion.div>
       </motion.a>
 
-      {backgroundMedia && isVideoUrl(backgroundMedia) && (
+      {activeMedia && isVideoUrl(activeMedia) && !mediaError && (
         <button
           type="button"
           onClick={toggleSound}
