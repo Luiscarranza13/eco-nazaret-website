@@ -20,6 +20,7 @@ export function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
   const [isSoundOn, setIsSoundOn] = useState(false)
+  const [volume, setVolume] = useState(1)
   const [mediaError, setMediaError] = useState(false)
 
   const backgroundMedia = useMemo(() => {
@@ -37,11 +38,17 @@ export function Hero() {
     }
   }, [backgroundMedia])
 
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume
+    }
+  }, [volume])
+
   const toggleSound = async () => {
     const audio = audioRef.current
     if (!audio) return
 
-    audio.volume = 0.18
+    audio.volume = volume
 
     if (!isSoundOn) {
       const played = await audio.play().then(() => true).catch(() => false)
@@ -51,6 +58,10 @@ export function Hero() {
     }
 
     setIsSoundOn(!isSoundOn)
+  }
+
+  const handleVolumeChange = (value: string) => {
+    setVolume(Number(value))
   }
 
   return (
@@ -179,14 +190,26 @@ export function Hero() {
       </motion.a>
 
       {activeMedia && isVideoUrl(activeMedia) && !mediaError && (
-        <button
-          type="button"
-          onClick={toggleSound}
-          className="absolute bottom-6 right-6 z-20 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/35 text-white backdrop-blur-md transition hover:bg-black/50"
-          aria-label={isSoundOn ? 'Silenciar música de fondo' : 'Activar música de fondo'}
-        >
-          {isSoundOn ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
-        </button>
+        <div className="absolute bottom-6 right-6 z-20 flex items-center gap-3 rounded-full border border-white/20 bg-black/35 px-3 py-2 text-white backdrop-blur-md">
+          <button
+            type="button"
+            onClick={toggleSound}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-white/12"
+            aria-label={isSoundOn ? 'Silenciar música de fondo' : 'Activar música de fondo'}
+          >
+            {isSoundOn ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+          </button>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.05"
+            value={volume}
+            onChange={(event) => handleVolumeChange(event.target.value)}
+            className="h-1.5 w-24 accent-green-300"
+            aria-label="Volumen de la música de fondo"
+          />
+        </div>
       )}
     </section>
   )
